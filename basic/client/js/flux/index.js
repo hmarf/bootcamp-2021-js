@@ -20,6 +20,13 @@ export const createFetchTodoListAction = () => ({
   paylaod: undefined,
 });
 
+// add list in todo list
+const ADD_TODO_ACTION_TYPE = "A todo addition to store";
+export const createAddTodoAction = (todo) => ({
+  type: ADD_TODO_ACTION_TYPE,
+  payload: todo,
+});
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -46,6 +53,20 @@ const reducer = async (prevState, { type, payload }) => {
       try {
         const resp = await fetch(api).then((d) => d.json());
         return { todoList: resp.todoList, error: null };
+      } catch (err) {
+        return { ...prevState, error: err };
+      }
+    }
+    case ADD_TODO_ACTION_TYPE: {
+      try {
+        const resp = await fetch(api, { 
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: headers 
+        }).then((d) => d.json());
+        const newList = prevState.todoList.concat()
+        newList.push(resp)
+        return { todoList: newList, error: null };
       } catch (err) {
         return { ...prevState, error: err };
       }

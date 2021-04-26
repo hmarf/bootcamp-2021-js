@@ -1,8 +1,9 @@
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
-    this.props = { id, name, done };
-    this.mounted = false;
+    this.element = document.createElement("li");
+    this.element.className = "todo-item";
+    this.props = {id, name, done}
   }
 
   mount() {
@@ -14,9 +15,7 @@ class Todo {
 
   render() {
     const { id, name, done } = this.props;
-    const next = document.createElement("li");
-    next.className = "todo-item";
-    next.innerHTML = `
+    this.element.innerHTML = `
       <label class="todo-toggle__container">
         <input
           data-todo-id="${id}"
@@ -30,12 +29,7 @@ class Todo {
       <div class="todo-name">${name}</div>
       <div data-todo-id="${id}" class="todo-remove-button">x</div>
     `;
-    if (!this.element) {
-      this.parent.appendChild(next);
-    } else {
-      this.parent.replaceChild(this.element, next);
-    }
-    this.element = next;
+    this.parent.appendChild(this.element)
     this.mount();
   }
 }
