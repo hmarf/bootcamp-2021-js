@@ -124,7 +124,7 @@ const reducer = async (prevState, { type, payload }) => {
         const index = prevState.todoList.findIndex(todo => todo.id === payload.id);
         const nextTodoList = prevState.todoList.concat()
         nextTodoList.splice(index, 1);
-        return {todoList: nextTodoList, error: null}
+        return {...prevState, todoList: nextTodoList, error: null}
       }
       catch (err) {
           return { ...prevState, error: err };
