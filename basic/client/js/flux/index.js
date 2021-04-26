@@ -33,6 +33,13 @@ export const patchTodoAction = (todo) => ({
   payload: todo,
 });
 
+// add list in todo list
+const DELETE_TODO_ACTION_TYPE = "delete list";
+export const deleteTodoAction = (todo) => ({
+  type: DELETE_TODO_ACTION_TYPE,
+  payload: todo,
+});
+
 const CLEAR_ERROR = "Clear error from state";
 export const clearError = () => ({
   type: CLEAR_ERROR,
@@ -102,6 +109,22 @@ const reducer = async (prevState, { type, payload }) => {
           const nextTodoList = prevState.todoList.concat();
           nextTodoList[index] = resp
           return { todoList: nextTodoList, error: null };
+      }
+      catch (err) {
+          return { ...prevState, error: err };
+      }
+    }
+    case DELETE_TODO_ACTION_TYPE: {
+      const url = api + '/' + payload.id;
+      try {
+        const resp = await fetch(url, { 
+          method: httpMethod.delete,
+          headers: headers
+        });
+        const index = prevState.todoList.findIndex(todo => todo.id === payload.id);
+        const nextTodoList = prevState.todoList.concat()
+        nextTodoList.splice(index, 1);
+        return {...prevState, todoList: nextTodoList, error: null}
       }
       catch (err) {
           return { ...prevState, error: err };

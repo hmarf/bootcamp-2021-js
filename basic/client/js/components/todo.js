@@ -1,5 +1,5 @@
 import store from '../store.js'
-import {patchTodoAction} from '../flux/index.js'
+import {patchTodoAction, deleteTodoAction} from '../flux/index.js'
 
 class Todo {
   constructor(parent, { id, name, done }) {
@@ -11,6 +11,11 @@ class Todo {
 
   mount() {
     // TODO: ここにTODOの削除ボタンが押されたときの処理を追記
+    const deleteButton = this.element.querySelector('.todo-remove-button');
+    deleteButton.addEventListener('click', () => {
+      store.dispatch(deleteTodoAction(this.props));
+    });
+    
     // TODO: ここにTODOのチェックボックスが押されたときの処理を追記
     const checkBox = this.element.querySelector(".todo-toggle");
     checkBox.addEventListener('click', () => {
