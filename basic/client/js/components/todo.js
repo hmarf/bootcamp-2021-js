@@ -1,16 +1,21 @@
+import store from '../store.js'
+import {patchTodoAction} from '../flux/index.js'
+
 class Todo {
   constructor(parent, { id, name, done }) {
     this.parent = parent;
     this.element = document.createElement("li");
     this.element.className = "todo-item";
-    this.props = {id, name, done}
+    this.props = {id, name, done};
   }
 
   mount() {
-    if (this.mounted) return;
     // TODO: ここにTODOの削除ボタンが押されたときの処理を追記
     // TODO: ここにTODOのチェックボックスが押されたときの処理を追記
-    this.mounted = true;
+    const checkBox = this.element.querySelector(".todo-toggle");
+    checkBox.addEventListener('click', () => {
+        store.dispatch(patchTodoAction(this.props));
+    });
   }
 
   render() {
